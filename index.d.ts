@@ -58,7 +58,7 @@ interface OutputByType {
 
 type InputFileFormat = InputByType[keyof InputByType];
 
-declare namespace JSZip {
+declare namespace Unzipper {
     type InputType = keyof InputByType;
 
     type OutputType = keyof OutputByType;
@@ -82,6 +82,7 @@ declare namespace JSZip {
          */
         async<T extends OutputType>(type: T, onUpdate?: OnUpdateCallback): Promise<OutputByType[T]>;
         nodeStream(type?: 'nodebuffer', onUpdate?: OnUpdateCallback): NodeJS.ReadableStream;
+        asyncAudioClip () : Promise<cc.AudioClip>;
     }
 
     interface JSZipFileOptions {
@@ -146,8 +147,8 @@ declare namespace JSZip {
     }
 }
 
-interface JSZip {
-    files: {[key: string]: JSZip.JSZipObject};
+interface Unzipper {
+    files: {[key: string]: Unzipper.JSZipObject};
 
     /**
      * Get a file from the archive
@@ -155,7 +156,7 @@ interface JSZip {
      * @param Path relative path to file
      * @return File matching path, null if no file found
      */
-    file(path: string): JSZip.JSZipObject | null;
+    file(path: string): Unzipper.JSZipObject | null;
 
     /**
      * Get files matching a RegExp from archive
@@ -163,7 +164,7 @@ interface JSZip {
      * @param path RegExp to match
      * @return Return all matching files or an empty array
      */
-    file(path: RegExp): JSZip.JSZipObject[];
+    file(path: RegExp): Unzipper.JSZipObject[];
 
     /**
      * Add a file to the archive
@@ -173,8 +174,8 @@ interface JSZip {
      * @param options Optional information about the file
      * @return JSZip object
      */
-    file<T extends JSZip.InputType>(path: string, data: InputByType[T] | Promise<InputByType[T]>, options?: JSZip.JSZipFileOptions): this;
-    file<T extends JSZip.InputType>(path: string, data: null, options?: JSZip.JSZipFileOptions & { dir: true }): this;
+    file<T extends Unzipper.InputType>(path: string, data: InputByType[T] | Promise<InputByType[T]>, options?: Unzipper.JSZipFileOptions): this;
+    file<T extends Unzipper.InputType>(path: string, data: null, options?: Unzipper.JSZipFileOptions & { dir: true }): this;
 
     /**
      * Returns an new JSZip instance with the given folder as root
@@ -182,7 +183,7 @@ interface JSZip {
      * @param name Name of the folder
      * @return New JSZip object with the given folder as root or null
      */
-    folder(name: string): JSZip | null;
+    folder(name: string): Unzipper | null;
 
     /**
      * Returns new JSZip instances with the matching folders as root
@@ -190,14 +191,14 @@ interface JSZip {
      * @param name RegExp to match
      * @return New array of JSZipFile objects which match the RegExp
      */
-    folder(name: RegExp): JSZip.JSZipObject[];
+    folder(name: RegExp): Unzipper.JSZipObject[];
 
     /**
      * Call a callback function for each entry at this folder level.
      *
      * @param callback function
      */
-    forEach(callback: (relativePath: string, file: JSZip.JSZipObject) => void): void;
+    forEach(callback: (relativePath: string, file: Unzipper.JSZipObject) => void): void;
 
     /**
      * Get all files which match the given filter function
@@ -205,7 +206,7 @@ interface JSZip {
      * @param predicate Filter function
      * @return Array of matched elements
      */
-    filter(predicate: (relativePath: string, file: JSZip.JSZipObject) => boolean): JSZip.JSZipObject[];
+    filter(predicate: (relativePath: string, file: Unzipper.JSZipObject) => boolean): Unzipper.JSZipObject[];
 
     /**
      * Removes the file or folder from the archive
@@ -213,7 +214,7 @@ interface JSZip {
      * @param path Relative path of file or folder
      * @return Returns the JSZip instance
      */
-    remove(path: string): JSZip;
+    remove(path: string): Unzipper;
 
     /**
      * Generates a new archive asynchronously
@@ -222,7 +223,7 @@ interface JSZip {
      * @param onUpdate The optional function called on each internal update with the metadata.
      * @return The serialized archive
      */
-    generateAsync<T extends JSZip.OutputType>(options?: JSZip.JSZipGeneratorOptions<T>, onUpdate?: OnUpdateCallback): Promise<OutputByType[T]>;
+    generateAsync<T extends Unzipper.OutputType>(options?: Unzipper.JSZipGeneratorOptions<T>, onUpdate?: OnUpdateCallback): Promise<OutputByType[T]>;
 
     /**
      * Generates a new archive asynchronously
@@ -231,7 +232,7 @@ interface JSZip {
      * @param onUpdate The optional function called on each internal update with the metadata.
      * @return A Node.js `ReadableStream`
      */
-    generateNodeStream(options?: JSZip.JSZipGeneratorOptions<'nodebuffer'>, onUpdate?: OnUpdateCallback): NodeJS.ReadableStream;
+    generateNodeStream(options?: Unzipper.JSZipGeneratorOptions<'nodebuffer'>, onUpdate?: OnUpdateCallback): NodeJS.ReadableStream;
 
     /**
      * Deserialize zip file asynchronously
@@ -240,7 +241,7 @@ interface JSZip {
      * @param options Options for deserializing
      * @return Returns promise
      */
-    loadAsync(data: InputFileFormat, options?: JSZip.JSZipLoadOptions): Promise<JSZip>;
+    loadAsync(data: InputFileFormat, options?: Unzipper.JSZipLoadOptions): Promise<Unzipper>;
 
     /**
      * Create JSZip instance
@@ -253,11 +254,11 @@ interface JSZip {
      * @param data Serialized zip archive
      * @param options Description of the serialized zip archive
      */
-    new (data?: InputFileFormat, options?: JSZip.JSZipLoadOptions): this;
+    new (data?: InputFileFormat, options?: Unzipper.JSZipLoadOptions): this;
 
-    (): JSZip;
+    (): Unzipper;
 
-    prototype: JSZip;
+    prototype: Unzipper;
     support: JSZipSupport;
     external: {
         Promise: PromiseConstructorLike;
@@ -265,6 +266,6 @@ interface JSZip {
     version: string;
 }
 
-declare var JSZip: JSZip;
+declare var JSZip: Unzipper;
 
-export = JSZip;
+export = Unzipper;

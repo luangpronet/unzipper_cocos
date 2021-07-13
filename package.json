@@ -1,9 +1,10 @@
 {
   "name": "jszip",
-  "version": "3.6.0",
+  "version": "0.10.3",
   "author": "Stuart Knightley <stuart@stuartk.com>",
   "description": "Create, read and edit .zip files with JavaScript http://stuartk.com/jszip",
   "scripts": {
+    "build": "rimraf dist && webpack --config webpack.config.assign.prd.js && webpack --config webpack.config.umd.dev.js && webpack --config webpack.config.umd.prd.js",
     "test": "npm run test-node && npm run test-browser",
     "test-node": "qunit --require ./test/helpers/test-utils.js --require ./test/helpers/node-test-utils.js test/asserts/",
     "test-browser": "grunt build && grunt test",
