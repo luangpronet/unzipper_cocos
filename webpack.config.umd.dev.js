@@ -8,7 +8,7 @@ module.exports = merge(common, {
     output: {
         library:{
             name:  "Unzipper",
-            type: "assign",
+            type: "umd",
         },
         filename: 'unzipper-' + config.version + '.umd.dev.js',
         path: path.resolve(__dirname, 'dist'),
